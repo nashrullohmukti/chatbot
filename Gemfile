@@ -44,9 +44,7 @@ gem 'omniauth-google-oauth2'
 gem 'html2slim'
 gem 'cancancan'
 gem 'rolify'
-gem 'activeadmin'
-gem 'active_skin'
-
+gem 'rails_admin'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
