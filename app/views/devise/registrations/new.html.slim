@@ -8,10 +8,7 @@ h2
     = f.input :email, required: true
     = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)
     = f.input :password_confirmation, required: true
-    - for role in User::ROLES
-      = check_box_tag "user[roles][#{role}]", role, @user.roles.include?(role), {:name => "user[roles][]"}
-      = label_tag "user_roles_#{role}", role.to_s.humanize
-    = hidden_field_tag "user[roles][]", ""
+    = f.input :role, :as => :hidden, value: "customer"
   .form-actions
     = f.button :submit, "Sign up"
 
