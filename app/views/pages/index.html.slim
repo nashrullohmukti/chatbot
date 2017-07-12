@@ -1,2 +1,6 @@
 h1 Pages#index
-p Find me in app/views/pages/index.html.slim
+
+= form_tag(invite_path) do |f|
+  = text_field_tag(:email)
+  = submit_tag("Invite")
+      

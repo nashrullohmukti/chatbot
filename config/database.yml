@@ -2,15 +2,15 @@
 development:
  adapter: postgresql
  encoding: unicode
- database: fourtyonestudio_development
+ database: chatbot_development
  pool: 16
  username: postgres
  password: postgres
- 
+
 test:
  adapter: postgresql
  encoding: unicode
- database: fourtyonestudio_test
+ database: chatbot_test
  pool: 16
  username: postgres
  password: postgres
