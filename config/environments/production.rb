@@ -88,4 +88,23 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_controller.default_url_options = { host: "http://chatbot-platform.herokuapp.com" }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+  config.force_ssl = false
+
+  config.action_mailer.smtp_settings = {
+    address: ENV['SENDGRID_ADDRESS'],
+    port: ENV['SENDGRID_PORT'],
+    domain: ENV['SENDGRID_DOMAIN'],
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_url_options = {:host => "http://chatbot-platform.herokuapp.com"}
 end

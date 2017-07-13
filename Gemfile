@@ -47,6 +47,7 @@ gem 'cancancan'
 gem 'rolify'
 gem 'rails_admin'
 gem 'apartment'
+gem 'exception_notification'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
