@@ -50,7 +50,3 @@ ExceptionNotification.configure do |config|
   # }
 
 end
-
-Fourtyonestudio::Application.config.middleware.use ExceptionNotification::Rack,
-  :ignore_if => ->(env, exception) { env['HTTP_USER_AGENT'] =~ /^python-requests/ || %w{52.25.154.9}.include?(env['HTTP_X_FORWARDED_FOR']) },
-  :ignore_crawlers => %w{Googlebot Baiduspider bingbot}
