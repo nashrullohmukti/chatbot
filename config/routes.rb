@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :companies
   post 'invites/index', as: 'invite'
 
   resources :categories

@@ -46,6 +46,7 @@ gem 'html2slim'
 gem 'cancancan'
 gem 'rolify'
 gem 'rails_admin'
+gem 'apartment'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @company.name
+p
+  strong Address:
+  = @company.address
+p
+  strong Telephone:
+  = @company.telephone
+p
+  strong Logo:
+  = @company.logo
+p
+  strong Domain:
+  = @company.domain
+
+= link_to 'Edit', edit_company_path(@company)
+'  |
+= link_to 'Back', companies_path
