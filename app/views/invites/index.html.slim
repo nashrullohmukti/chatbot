@@ -1,2 +1,9 @@
-h1 Invites#index
-p Find me in app/views/invites/index.html.slim
+.page-header
+  h1 Invite User
+
+= form_tag invite_path, class: "form-inline" do ||
+  .form-group
+  	= text_field_tag :email, params[:email], class: "form-control", placeholder: "Email"
+
+  .form-group
+  	= submit_tag "Invite", class: "btn btn-primary"

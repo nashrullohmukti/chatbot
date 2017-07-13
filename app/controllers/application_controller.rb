@@ -8,6 +8,14 @@ class ApplicationController < ActionController::Base
     redirect_to main_app.root_path, :alert => exception.message
   end
 
+  def after_sign_in_path_for(resource)
+    if current_user.role.eql?('admin')
+      rails_admin.dashboard_path
+    else
+      root_path(current_user)
+    end
+  end
+
   protected
 
   def configure_permitted_parameters

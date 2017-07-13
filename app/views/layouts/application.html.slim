@@ -20,7 +20,7 @@ html lang="en"
     = javascript_include_tag "application"
 
   body
-    nav.navbar.navbar-default.navbar-fuild role="navigation"
+    nav.navbar.navbar-inverse.navbar-fuild role="navigation"
       .container
         .navbar-header
           button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
@@ -28,11 +28,13 @@ html lang="en"
             span.icon-bar
             span.icon-bar
           = link_to "Chatbot", root_path, class: "navbar-brand"
+
         .navbar-collapse.collapse.navbar-responsive-collapse
           ul.nav.navbar-nav
-            li.active= link_to "Category", categories_path
-            li= link_to "Link 2", "#"
-            li= link_to "Link 3", "#"
+             - if user_signed_in?
+              li= link_to "Category", categories_path
+              li= link_to "Invite User", invites_path
+
           ul.nav.navbar-nav.pull-right
             - if user_signed_in?
               li.dropdown
@@ -43,25 +45,26 @@ html lang="en"
                   li = link_to 'Profile', edit_user_registration_path
                   li = link_to 'Log out', destroy_user_session_path, method: :delete
             - else
-              li = link_to 'Log In', new_user_session_path 
+              li = link_to 'Log In', new_user_session_path
               li = link_to 'Sign Up', new_user_registration_path
 
     .container
       .row
-        .col-md-9
+        .col-md-12
           = bootstrap_flash
           = yield
-        .col-md-3
-          .well.sidebar-nav
-            h3 Sidebar
-            ul.nav.nav-list
-              li.nav-header Sidebar
-              li= link_to "Link 1", "#"
-              li= link_to "Link 2", "#"
-              li= link_to "Link 3", "#"
+        / .col-md-3
+        /   .well.sidebar-nav
+        /     h3 Sidebar
+        /     ul.nav.nav-list
+        /       li.nav-header Sidebar
+        /       li= link_to "Link 1", "#"
+        /       li= link_to "Link 2", "#"
+        /       li= link_to "Link 3", "#"
 
-      footer
-        p &copy; Company 2017
+      / footer
+      /   p &copy; Company 2017
+
     javascript:
       Smooch.init({
         appToken: '6ndetghfb8si97ezq11mn0d2w',
