@@ -15,6 +15,7 @@ table.table.table-striped
         td= category.name
         td=l category.created_at, format: :long
         td
+          = link_to 'Add Question', new_chat_path(category_id: category.id), class: "btn btn-sm btn-primary"
           = link_to category_path(category), class: 'btn btn-xs', title: "#{ t('.show', default: t('helpers.links.show')) }" do
             = glyph 'info-sign'
           = link_to edit_category_path(category), class: 'btn btn-xs', title: "#{ t('.edit', default: t('helpers.links.edit')) }" do
