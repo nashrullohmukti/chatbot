@@ -97,11 +97,11 @@ Rails.application.configure do
   config.force_ssl = false
 
   config.action_mailer.smtp_settings = {
-    address: ENV['SENDGRID_ADDRESS'],
-    port: ENV['SENDGRID_PORT'],
-    domain: ENV['SENDGRID_DOMAIN'],
-    user_name: ENV['SENDGRID_USERNAME'],
-    password: ENV['SENDGRID_PASSWORD'],
+    address: ENV['MAILGUN_ADDRESS'],
+    port: ENV['MAILGUN_PORT'],
+    domain: ENV['MAILGUN_DOMAIN'],
+    user_name: ENV['MAILGUN_USERNAME'],
+    password: ENV['MAILGUN_PASSWORD'],
     authentication: 'plain',
     enable_starttls_auto: true
   }
