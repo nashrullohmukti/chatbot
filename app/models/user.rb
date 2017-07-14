@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :rememberable, :validatable, :confirmable, :invitable,
          :omniauthable, :omniauth_providers => [:google_oauth2, :facebook]
 
+  has_one :company
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

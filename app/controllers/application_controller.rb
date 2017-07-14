@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if current_user.role.eql?('admin')
-      rails_admin.dashboard_path
+      if current_user.company.present? && current_user.company.name.nil?
+        edit_company_path(current_user.company)
+      else
+        rails_admin.dashboard_path
+      end
     else
       root_path(current_user)
     end

@@ -1,5 +1,7 @@
 class Company < ApplicationRecord
-  after_create :add_tenant_to_apartment
+  belongs_to :user
+
+  # after_create :add_company_to_apartment
 
   def self.current
     company = Company.find_by domain:Apartment::Tenant.current

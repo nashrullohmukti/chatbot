@@ -42,6 +42,10 @@ class CompaniesController < ApplicationController
   def update
     respond_to do |format|
       if @company.update(company_params)
+        unless Apartment.tenant_names.include?(@company.domain)
+          @company.add_company_to_apartment
+        end
+
         format.html { redirect_to @company, notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
       else
