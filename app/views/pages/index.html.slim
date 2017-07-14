@@ -1,5 +1,10 @@
 .jumbotron
   h1 Welcome!
-
-
-
+  br
+  br
+  strong Please enter "Hello" to test the Bot 
+  br
+  br
+  = form_tag(test_chat_path, method: "post") do
+    = text_field_tag(:question)
+    = submit_tag("Ask a Question")

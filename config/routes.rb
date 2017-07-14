@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   post 'invites/invite' => 'invites#invite', as: 'invite'
 
   get 'users/new-company' => 'users/registrations#new_company'
-
+  post 'pages/chat' => 'pages#chat', as: 'test_chat'
   root 'pages#index'
 end
