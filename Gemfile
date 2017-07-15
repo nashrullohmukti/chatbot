@@ -48,6 +48,8 @@ gem 'rolify'
 gem 'rails_admin'
 gem 'apartment'
 gem 'exception_notification'
+# gem "motion-ai"
+gem 'faraday_middleware'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
