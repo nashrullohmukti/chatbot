@@ -46,7 +46,7 @@ module MotionAI
         end
       end
 
-      @http.get URI.join(API_ENDPOINT, MESSAGE_HUMAN_API_PATH), params
+      @http.post URI.join(API_ENDPOINT, MESSAGE_HUMAN_API_PATH), URI.encode_www_form(params), { 'X-Accept' => 'application/json' }
     end
 
     def get_conversations(params = {})
