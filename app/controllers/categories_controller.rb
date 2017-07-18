@@ -70,6 +70,11 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name, :auto, :priority, :contexts, :templates,
+        intent_user_says_attributes: [:text, :alias, :meta, :id, :_destroy],
+        intent_responses_attributes: [:reset_contexts, :action, :speech, :id, :_destroy,
+          intent_affected_contexts_attributes: [:name, :lifespan, :id, :_destroy],
+          intent_parameters_attributes: [:data_type, :name, :value, :id, :_destroy]]
+      )
     end
 end

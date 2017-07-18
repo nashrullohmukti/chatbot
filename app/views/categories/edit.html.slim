@@ -1,4 +1,6 @@
-- model_class = Category
-div class="page-header"
-  h1=t '.title', default: [:'helpers.titles.edit', 'Edit %{model}'], model: model_class.model_name.human.titleize
-= render partial: "form"
+.page-header
+  h1 Edit #{@category.name}
+
+.row
+	.col-md-12
+		= render partial: "form"

@@ -35,6 +35,8 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'bootstrap-sass-extras'
 gem 'bootstrap-sass'
+gem 'bootstrap-tagsinput-rails'
+gem "cocoon"
 gem 'friendly_id'
 gem 'simple_form'
 gem 'rack-mini-profiler'
@@ -48,8 +50,8 @@ gem 'rolify'
 gem 'rails_admin'
 gem 'apartment'
 gem 'exception_notification'
-# gem "motion-ai"
-gem 'faraday_middleware'
+gem 'api-ai-ruby', github: "ervinarukii/apiai-ruby-client"
+gem 'httparty'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

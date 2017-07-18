@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data_type: MyString
+  name: MyString
+  value: MyString
+  intent_response: one
+
+two:
+  data_type: MyString
+  name: MyString
+  value: MyString
+  intent_response: two

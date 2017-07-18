@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170713100934) do
+ActiveRecord::Schema.define(version: 20170718085257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,10 @@ ActiveRecord::Schema.define(version: 20170713100934) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.boolean "auto"
+    t.text "contexts"
+    t.text "templates"
+    t.integer "priority"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
@@ -44,6 +48,45 @@ ActiveRecord::Schema.define(version: 20170713100934) do
     t.integer "user_id"
   end
 
+  create_table "intent_affected_contexts", force: :cascade do |t|
+    t.string "name"
+    t.integer "lifespan"
+    t.bigint "intent_response_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["intent_response_id"], name: "index_intent_affected_contexts_on_intent_response_id"
+  end
+
+  create_table "intent_parameters", force: :cascade do |t|
+    t.string "data_type"
+    t.string "name"
+    t.string "value"
+    t.bigint "intent_response_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["intent_response_id"], name: "index_intent_parameters_on_intent_response_id"
+  end
+
+  create_table "intent_responses", force: :cascade do |t|
+    t.boolean "reset_contexts"
+    t.string "action"
+    t.string "speech"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_intent_responses_on_category_id"
+  end
+
+  create_table "intent_user_says", force: :cascade do |t|
+    t.string "text"
+    t.string "alias"
+    t.string "meta"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_intent_user_says_on_category_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
@@ -53,6 +96,16 @@ ActiveRecord::Schema.define(version: 20170713100934) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "user_says", force: :cascade do |t|
+    t.string "text"
+    t.string "alias"
+    t.string "meta"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_user_says_on_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -102,4 +155,6 @@ ActiveRecord::Schema.define(version: 20170713100934) do
   end
 
   add_foreign_key "chats", "categories"
+  add_foreign_key "intent_affected_contexts", "intent_responses"
+  add_foreign_key "intent_parameters", "intent_responses"
 end

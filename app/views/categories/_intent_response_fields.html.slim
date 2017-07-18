@@ -1,0 +1,26 @@
+.nested-fields
+	.panel.panel-default
+		.panel-heading Intent Response
+		.panel-body
+		  = f.input :reset_contexts, as: :boolean, label: "Indicates that all contexts will be reset when this intent is triggered"
+		  = f.input :action
+		  = f.input :speech
+		  = link_to_remove_association "Remove Response", f, class: "btn btn-sm btn-danger pull-right"
+
+		  #intentAffectedContexts
+		    = f.simple_fields_for :intent_affected_contexts do |affected_context|
+		      = render 'intent_affected_context_fields', f: affected_context
+
+		  .col-md-12
+		   	= link_to_add_association 'Add Affected Context', f, :intent_affected_contexts, class: "btn btn-sm btn-success"
+		   	br
+		   	hr
+
+		  #intentParameters
+		    = f.simple_fields_for :intent_parameters do |parameter|
+		      = render 'intent_parameter_fields', f: parameter
+
+		  .col-md-12
+		   	= link_to_add_association 'Add Parameter', f, :intent_parameters, class: "btn btn-sm btn-success"
+		   	br
+		   	br

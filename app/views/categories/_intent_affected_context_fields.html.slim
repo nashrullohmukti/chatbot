@@ -1,0 +1,7 @@
+.nested-fields
+	.page-header
+		strong Intent affected context
+	br
+	= f.input :name
+	= f.input :lifespan, as: :integer
+	= link_to_remove_association "Remove affected context", f, class: "btn btn-sm btn-danger pull-right"

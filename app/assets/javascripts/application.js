@@ -13,7 +13,9 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require bootstrap-sprockets
 //= require turbolinks
 //= require chat
+//= require bootstrap-sprockets
+//= require bootstrap-tagsinput
+//= require cocoon
 //= require_tree .

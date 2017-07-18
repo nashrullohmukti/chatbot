@@ -1,0 +1,8 @@
+.nested-fields
+	.panel.panel-default
+		.panel-heading Intent user say
+		.panel-body
+		  = f.input :text
+		  = f.input :alias
+		  = f.input :meta
+		  = link_to_remove_association "Remove", f, class: "btn btn-sm btn-danger pull-right"
