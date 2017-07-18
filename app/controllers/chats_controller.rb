@@ -16,7 +16,7 @@ class ChatsController < ApplicationController
   def webhook
     response = Chat.first.answer rescue "answer not found"
 
-    render json: { answer: response }, status: :ok
+    render json: { speech: response, displayText: response, source: "chatbot-platform.herokuapp.com" }, status: :ok
   end
 
   # GET /chats/new
