@@ -1,5 +1,6 @@
 class ChatsController < ApplicationController
   before_action :set_chat, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery with: :null_session
 
   # GET /chats
   # GET /chats.json
@@ -10,6 +11,12 @@ class ChatsController < ApplicationController
   # GET /chats/1
   # GET /chats/1.json
   def show
+  end
+
+  def webhook
+    response = Chat.first.answer rescue "answer not found"
+
+    render json: { answer: response }, status: :ok
   end
 
   # GET /chats/new
