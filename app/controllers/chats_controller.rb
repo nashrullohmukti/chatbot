@@ -14,7 +14,7 @@ class ChatsController < ApplicationController
   end
 
   def webhook
-    response = "Your " + params[:result][:parameters][:orders] + " with id " + params[:result][:parameters][:number] + " is recorded."
+    response = "Your " + params[:result][:parameters][:orders] + " with id " + params[:result][:parameters][:number] + " is being shipped."
     render json: { speech: response, displayText: response, source: "chatbot-platform.herokuapp.com" }, status: :ok
   end
 
