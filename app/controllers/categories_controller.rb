@@ -43,6 +43,33 @@ class CategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @category.update(category_params)
+        client = ApiAiRuby::Client.new(
+            :client_access_token => ENV['API_AI_ACCESS']
+        )
+        params = ApiAiRuby::Intent.new(
+          category_params[:name]+ "_intent",
+          true,
+          [category_params[:contexts]],
+          [category_params[:templates]],
+          [{"data":[
+            ApiAiRuby::UserSayData.new(category_params[:text], category_params[:alias], category_params[:meta])
+          ]}],
+          [ApiAiRuby::Response.new(
+            category_params[:reset_contexts],
+            category_params[:action],
+            [ ApiAiRuby::AffectedContext.new("test", category_params[:lifespan]) ],
+            [ ApiAiRuby::Parameter.new(
+              category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:name],
+              "@" + category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:data_type],
+              "\$" + category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:value])
+            ],
+            category_params[:speech]
+          )],
+          500000
+        )
+        uer = client.create_intents_request
+        uer.create(params)
+
         format.html { redirect_to @category, notice: 'Category was successfully updated.' }
         format.json { render :show, status: :ok, location: @category }
       else
