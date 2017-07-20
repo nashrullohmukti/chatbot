@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_api_ai_client, only: [:create, :update, :destroy]
 
   # GET /categories
   # GET /categories.json
@@ -25,15 +26,30 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    @category = Category.new(category_params)
+    intent_request = @api_ai_client.create_intents_request
+    response       = intent_request.create(param_options)
+
+    contexts_templates  = { contexts: category_params[:contexts].split(","), templates: category_params[:templates].split(",") }
+
+    @category = Category.new(category_params.merge(contexts_templates))
 
     respond_to do |format|
-      if @category.save
-        format.html { redirect_to @category, notice: 'Category was successfully created.' }
-        format.json { render :show, status: :created, location: @category }
+      if response.is_a?(Hash) && response[:status][:code].eql?(200)
+        @category.intent_id = response[:id]
+
+        if @category.save
+
+          format.html { redirect_to @category, notice: 'Category was successfully created.' }
+          format.json { render :show, status: :created, location: @category }
+        else
+          format.html { render :new }
+          format.json { render json: @category.errors, status: :unprocessable_entity }
+        end
       else
+        @notice = response.message
+
         format.html { render :new }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
+        format.json { render json: { error: response.message }, status: response.code}
       end
     end
   end
@@ -42,39 +58,26 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1.json
   def update
     respond_to do |format|
-      if @category.update(category_params)
-        client = ApiAiRuby::Client.new(
-            :client_access_token => ENV['API_AI_ACCESS']
-        )
-        params = ApiAiRuby::Intent.new(
-          category_params[:name]+ "_intent",
-          true,
-          [category_params[:contexts]],
-          [category_params[:templates]],
-          [{"data":[
-            ApiAiRuby::UserSayData.new(category_params[:text], category_params[:alias], category_params[:meta])
-          ]}],
-          [ApiAiRuby::Response.new(
-            category_params[:reset_contexts],
-            category_params[:action],
-            [ ApiAiRuby::AffectedContext.new("test", category_params[:lifespan]) ],
-            [ ApiAiRuby::Parameter.new(
-              category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:name],
-              "@" + category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:data_type],
-              "\$" + category_params["intent_responses_attributes"]["0"]["intent_parameters_attributes"]["0"][:value])
-            ],
-            category_params[:speech]
-          )],
-          500000
-        )
-        uer = client.create_intents_request
-        uer.create(params)
 
-        format.html { redirect_to @category, notice: 'Category was successfully updated.' }
-        format.json { render :show, status: :ok, location: @category }
+      intent_request = @api_ai_client.create_intents_request
+      response       = intent_request.update(@category.intent_id, param_options)
+
+      if response.is_a?(Hash) && response[:status][:code].eql?(200)
+
+        contexts_templates  = { contexts: category_params[:contexts].split(","), templates: category_params[:templates].split(",") }
+
+        if @category.update(category_params.merge(contexts_templates))
+          format.html { redirect_to @category, notice: 'Category was successfully updated.' }
+          format.json { render :show, status: :ok, location: @category }
+        else
+          format.html { render :edit }
+          format.json { render json: @category.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
+        @notice = response.message
+
+        format.html { render :new }
+        format.json { render json: { error: response.message }, status: response.code}
       end
     end
   end
@@ -89,10 +92,55 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def param_options
+    user_says_data = []
+
+    category_params[:intent_user_says_attributes].each do |k, us|
+      user_says_data << ApiAiRuby::UserSayData.new(us[:text], us[:alias], us[:meta])
+    end
+
+    responses = []
+
+    category_params[:intent_responses_attributes].each do |k, r|
+      intent_aff_contexts = []
+      intent_parameters   = []
+      r[:intent_affected_contexts_attributes].each do |kac, vac|
+        intent_aff_contexts << ApiAiRuby::AffectedContext.new(vac[:name], vac[:lifespan])
+      end
+
+      r[:intent_parameters_attributes].each do |kp, vp|
+        intent_parameters << ApiAiRuby::Parameter.new(vp[:name], vp[:data_type], "\$" + vp[:value])
+      end
+
+      responses << ApiAiRuby::Response.new(
+        r[:reset_contexts],
+        r[:action],
+        intent_aff_contexts,
+        intent_parameters,
+        category_params[:speech]
+      )
+    end
+
+    param_options = ApiAiRuby::Intent.new(
+      category_params[:name] + "_intent",
+      (category_params[:auto].eql?("1") ? true : false),
+      category_params[:contexts].split(","),
+      category_params[:templates].split(","),
+      [ { "data": user_says_data } ],
+      responses, 500000
+    )
+
+    param_options
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.friendly.find(params[:id])
+    end
+
+    def set_api_ai_client
+      @api_ai_client = ApiAiRuby::Client.new(:client_access_token => ENV['API_AI_ACCESS'])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

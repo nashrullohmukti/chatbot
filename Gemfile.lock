@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ervinarukii/apiai-ruby-client.git
-  revision: 44da73c2531edcdaf82a1eef98bb30acc9bfdde5
+  revision: 3f87d6840f363142918e8a774473f5e171862041
   specs:
     api-ai-ruby (2.0.0)
       http (~> 2.0)

@@ -1,12 +1,55 @@
-- model_class = Category
 div class="page-header"
-  h1=t '.title', default: model_class.model_name.human.titleize
+  h1
 
 .fieldset
   dl
-      dt.label.label-default= model_class.human_attribute_name(:name)
+    dt.label.label-default Intent ID
+    dd
+      pre.prettyprint= @category.intent_id
+
+  dl
+    dt.label.label-default Name
+    dd
+      pre.prettyprint= @category.name
+
+  dl
+    dt.label.label-default Auto
+    dd
+      pre.prettyprint= @category.auto
+
+  dl
+    dt.label.label-default Contexts
+    dd
+      pre.prettyprint= @category.contexts
+
+  dl
+    dt.label.label-default Templates
+    dd
+      pre.prettyprint= @category.templates
+
+  dl
+    dt.label.label-default Priority
+    dd
+      pre.prettyprint= @category.priority
+
+  dl
+    dt.label.label-default User Says
+    br
+
+  - @category.intent_user_says.each do |user_say|
+    dl
+      dt.label.label-default Text
       dd
-        pre.prettyprint= @category.name
+        pre.prettyprint= user_say.text
+    dl
+      dt.label.label-default Alias
+      dd
+        pre.prettyprint= user_say.alias
+    dl
+      dt.label.label-default Meta
+      dd
+        pre.prettyprint= user_say.meta
+
 
 .form-group
   = link_to t('.back', default: t("helpers.links.back")), categories_path, class: 'btn btn-default'
