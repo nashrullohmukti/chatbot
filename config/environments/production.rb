@@ -97,11 +97,10 @@ Rails.application.configure do
   config.force_ssl = false
 
   config.action_mailer.smtp_settings = {
-    address: ENV['MAILGUN_ADDRESS'],
-    port: ENV['MAILGUN_PORT'],
-    domain: ENV['MAILGUN_DOMAIN'],
-    user_name: ENV['MAILGUN_USERNAME'],
-    password: ENV['MAILGUN_PASSWORD'],
+    address: ENV['MAILJET_ADDRESS'],
+    port: ENV['MAILJET_PORT'],
+    user_name: ENV['MAILJET_USERNAME'],
+    password: ENV['MAILJET_PASSWORD'],
     authentication: 'plain',
     enable_starttls_auto: true
   }
