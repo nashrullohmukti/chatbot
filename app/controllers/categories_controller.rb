@@ -28,7 +28,6 @@ class CategoriesController < ApplicationController
   def create
     intent_request = @api_ai_client.create_intents_request
     response       = intent_request.create(param_options)
-
     contexts_templates  = { contexts: category_params[:contexts].split(","), templates: category_params[:templates].split(",") }
 
     @category = Category.new(category_params.merge(contexts_templates))
@@ -85,10 +84,16 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1
   # DELETE /categories/1.json
   def destroy
-    @category.destroy
-    respond_to do |format|
-      format.html { redirect_to categories_url, notice: 'Category was successfully destroyed.' }
-      format.json { head :no_content }
+    intent_request = @api_ai_client.create_intents_request
+    response       = intent_request.delete(@category.intent_id)
+
+    if response.is_a?(Hash) && response[:status][:code].eql?(200)
+
+      @category.destroy
+      respond_to do |format|
+        format.html { redirect_to categories_url, notice: 'Category was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -104,11 +109,14 @@ class CategoriesController < ApplicationController
     category_params[:intent_responses_attributes].each do |k, r|
       intent_aff_contexts = []
       intent_parameters   = []
-      r[:intent_affected_contexts_attributes].each do |kac, vac|
+
+      intent_aff_contexts_attr = r[:intent_affected_contexts_attributes] || Array.new
+      intent_aff_contexts_attr.each do |kac, vac|
         intent_aff_contexts << ApiAiRuby::AffectedContext.new(vac[:name], vac[:lifespan])
       end
 
-      r[:intent_parameters_attributes].each do |kp, vp|
+      intent_parameters_attr = r[:intent_parameters_attributes] || Array.new
+      intent_parameters_attr.each do |kp, vp|
         intent_parameters << ApiAiRuby::Parameter.new(vp[:name], vp[:data_type], "\$" + vp[:value])
       end
 
