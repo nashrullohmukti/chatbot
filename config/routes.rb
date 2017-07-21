@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   get  'invites/index' => 'invites#index', as: 'invites'
   post 'invites/invite' => 'invites#invite', as: 'invite'
 
-  get 'users/new-company' => 'users/registrations#new_company'
-  post 'pages/chat' => 'pages#chat', as: 'test_chat'
   root 'pages#index'
 
   post '/chats/webhook' => 'chats#webhook'

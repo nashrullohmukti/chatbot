@@ -41,6 +41,8 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1.json
   def update
     respond_to do |format|
+      Apartment::Tenant.create(@company.domain) unless @company.domain.present?
+
       if @company.update(company_params)
         unless Apartment.tenant_names.include?(@company.domain)
           @company.add_company_to_apartment

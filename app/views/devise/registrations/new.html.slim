@@ -7,9 +7,14 @@
     .form-inputs
 
       = f.input :name, required: true, autofocus: true
+
       / .form-group
       /   = label_tag "Company name"
-      /   = text_field_tag "company[name]", nil, class: "form-control"
+      /   = text_field_tag "company_name", nil, class: "form-control", required: true
+
+      / .form-group
+      /   = label_tag "domain"
+      /   = text_field_tag "domain", nil, class: "form-control", required: true
 
       = f.input :email, required: true
       = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)

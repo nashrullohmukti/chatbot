@@ -10,12 +10,8 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.role.eql?('admin')
-      if current_user.company.present? && current_user.company.name.nil?
-        edit_company_path(current_user.company)
-      else
-        rails_admin.dashboard_path
-      end
+    if current_user.role.eql?('admin') && current_user.company.present? && current_user.company.name.nil?
+      edit_company_path(current_user.company)
     else
       root_path(current_user)
     end
@@ -24,8 +20,16 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_current_tenant
-    if user_signed_in?
-      Apartment::Tenant.switch!(current_user.company.domain) if current_user.company.present?
+    if user_signed_in? && current_user.company.present?
+      if current_user.company.domain.present?
+        Apartment::Tenant.switch!(current_user.company.domain)
+      else
+        unless (params[:controller].eql?("companies") && params[:action].eql?("edit") || params[:action].eql?("update")) || params[:controller].include?('devise')
+          redirect_to edit_company_path(current_user.company), alert: "Please complete your company profile "
+        end
+      end
+    else
+      Apartment::Tenant.switch!("public")
     end
   end
 
