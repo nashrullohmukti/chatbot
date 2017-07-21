@@ -17,5 +17,11 @@
 //= require chat
 //= require bootstrap-sprockets
 //= require bootstrap-tagsinput
+//= require moment
 //= require cocoon
 //= require_tree .
+
+
+$( document ).on('turbolinks:load', function() {
+	$("[data-role=tagsinput]").tagsinput();
+});

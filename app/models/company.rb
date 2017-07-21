@@ -1,5 +1,5 @@
 class Company < ApplicationRecord
-  belongs_to :user
+  has_many :users, dependent: :destroy
 
   # after_create :add_company_to_apartment
 
