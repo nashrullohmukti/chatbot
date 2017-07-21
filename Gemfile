@@ -36,6 +36,7 @@ gem 'jquery-turbolinks'
 gem 'bootstrap-sass-extras'
 gem 'bootstrap-sass'
 gem 'bootstrap-tagsinput-rails'
+gem 'momentjs-rails'
 gem "cocoon"
 gem 'friendly_id'
 gem 'simple_form'
@@ -51,7 +52,8 @@ gem 'rails_admin'
 gem 'apartment'
 gem 'exception_notification'
 gem 'api-ai-ruby', github: "ervinarukii/apiai-ruby-client"
-gem 'httparty'
+gem 'carrierwave'
+gem 'kaminari'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

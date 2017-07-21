@@ -7,8 +7,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	def create
     build_resource(sign_up_params)
 
-		resource.build_company
-		resource.role = 'admin'
+		company = Company.create
+    resource.role = 'admin'
+		resource.company_id = company.id
 
     resource.save
     yield resource if block_given?

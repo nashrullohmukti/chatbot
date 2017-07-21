@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170720094642) do
+ActiveRecord::Schema.define(version: 20170721073415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 20170720094642) do
     t.string "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
   end
 
   create_table "intent_affected_contexts", force: :cascade do |t|
@@ -130,6 +129,8 @@ ActiveRecord::Schema.define(version: 20170720094642) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

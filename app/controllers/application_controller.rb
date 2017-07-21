@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_current_tenant
 
   # load_and_authorize_resource
 
@@ -21,6 +22,12 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def set_current_tenant
+    if user_signed_in?
+      Apartment::Tenant.switch!(current_user.company.domain) if current_user.company.present?
+    end
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :role])
