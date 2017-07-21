@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721073415) do
+ActiveRecord::Schema.define(version: 20170721095829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,22 @@ ActiveRecord::Schema.define(version: 20170721073415) do
     t.string "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "entities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_entities_on_company_id"
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.string "name"
+    t.bigint "entity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "index_entries_on_entity_id"
   end
 
   create_table "intent_affected_contexts", force: :cascade do |t|
@@ -147,6 +163,8 @@ ActiveRecord::Schema.define(version: 20170721073415) do
   end
 
   add_foreign_key "chats", "categories"
+  add_foreign_key "entities", "companies"
+  add_foreign_key "entries", "entities"
   add_foreign_key "intent_affected_contexts", "intent_responses"
   add_foreign_key "intent_parameters", "intent_responses"
 end

@@ -1,0 +1,20 @@
+.page-header
+  h1 Entities
+
+.row
+  .col-md-12
+    ul.list-group
+      - @entities.each do |entity|
+        li.list-group-item
+          strong= link_to entity.name, entity_path(entity)
+
+          .pull-right
+            / = link_to 'Add Question', new_chat_path(category_id: category.id), class: "btn btn-sm btn-primary"
+            = link_to entity_path(entity), class: 'btn btn-xs', title: "#{ t('.show', default: t('helpers.links.show')) }" do
+              = glyph 'info-sign'
+            = link_to edit_entity_path(entity), class: 'btn btn-xs', title: "#{ t('.edit', default: t('helpers.links.edit')) }" do
+              = glyph 'pencil'
+            = link_to entity_path(entity), method: :delete, data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) }, class: 'btn btn-xs', title: "#{ t('.destroy', default: t('helpers.links.destroy')) }" do
+              = glyph 'remove'
+  hr
+  = link_to "Add new entity", new_entity_path, class: 'btn btn-success'

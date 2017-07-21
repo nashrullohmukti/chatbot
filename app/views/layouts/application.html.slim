@@ -32,6 +32,8 @@ html lang="en"
           ul.nav.navbar-nav
              - if user_signed_in?
               li= link_to "Categories", categories_path
+              li= link_to "Entities", entities_path
+              li= link_to "Entries", entries_path
               li= link_to "Invite User", invites_path
 
           ul.nav.navbar-nav.pull-right
