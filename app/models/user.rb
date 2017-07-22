@@ -39,4 +39,8 @@ class User < ApplicationRecord
   def is_customer?
     role == 'customer'
   end
+
+  def has_company?
+    company.present? && company.domain.present?
+  end
 end

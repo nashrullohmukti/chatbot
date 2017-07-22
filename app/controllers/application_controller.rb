@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_current_tenant
+  # before_action :set_current_tenant
 
   # load_and_authorize_resource
 
@@ -10,8 +10,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.role.eql?('admin') && current_user.company.present? && current_user.company.name.nil?
-      edit_company_path(current_user.company)
+    if current_user.has_company?
+      if current_user.role.eql?('admin') && current_user.has_company?
+        edit_company_path(id: current_user.company, subdomain: current_user.company.domain)
+      else
+        root_path(subdomain: current_user.company.domain)
+      end
     else
       root_path(current_user)
     end
@@ -22,7 +26,7 @@ class ApplicationController < ActionController::Base
   def set_current_tenant
     if user_signed_in? && current_user.company.present?
       if current_user.company.domain.present?
-        Apartment::Tenant.switch!(current_user.company.domain)
+        # Apartment::Tenant.switch!(current_user.company.domain)
       else
         unless (params[:controller].eql?("companies") && params[:action].eql?("edit") || params[:action].eql?("update")) || params[:controller].include?('devise')
           redirect_to edit_company_path(current_user.company), alert: "Please complete your company profile "
