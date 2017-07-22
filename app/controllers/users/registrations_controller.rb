@@ -1,13 +1,11 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
-	def new_company
-
-	end
-
 	def create
     build_resource(sign_up_params)
 
-		company = Company.create
+		company = Company.new
+    company.save(validate: false)
+
     resource.role = 'admin'
 		resource.company_id = company.id
 

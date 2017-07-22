@@ -1,7 +1,8 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
 
-  # after_create :add_company_to_apartment
+  validates :name, :domain, presence: true
+  validates :domain, uniqueness: true
 
   def self.current
     company = Company.find_by domain:Apartment::Tenant.current
@@ -14,6 +15,7 @@ class Company < ApplicationRecord
   end
 
   private
+
     def add_company_to_apartment
       Apartment::Tenant.create(domain)
     end

@@ -27,4 +27,16 @@ class User < ApplicationRecord
       end
     end
   end
+
+  def is_admin?
+    role == 'admin'
+  end
+
+  def is_super_admin?
+    role == 'super_admin'
+  end
+
+  def is_customer?
+    role == 'customer'
+  end
 end

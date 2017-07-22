@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20170721095829) do
     t.text "templates"
     t.integer "priority"
     t.string "intent_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_categories_on_company_id"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
