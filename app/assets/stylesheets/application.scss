@@ -17,17 +17,16 @@
 
  @import "bootstrap-sprockets";
  @import "bootstrap";
+ @import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
+ @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
-a {
-  text-decoration: none !important;
-}
+ body {
+   font-family: 'Open Sans', sans-serif;
+ }
+ a {
+   text-decoration: none !important;
+ }
 
-#chatbox iframe {
-	right: 0px;
-    position: fixed;
-    bottom: 0px;
-}
-
-.bootstrap-tagsinput {
-	width: 100%;
-}
+ .bootstrap-tagsinput {
+   width: 100%;
+ }
