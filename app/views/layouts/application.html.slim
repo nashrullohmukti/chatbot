@@ -19,6 +19,7 @@ html lang="en"
     = javascript_include_tag "application", "data-turbolinks-track" => true
 
   body
+    a class="open-btn btn btn-primary" id="addClass" Chat With Bot
     nav.navbar.navbar-inverse.navbar-fuild role="navigation"
       .container
         .navbar-header
@@ -56,7 +57,20 @@ html lang="en"
         .col-md-12
           = bootstrap_flash
           = yield
-
-    - if params[:controller].include?("pages")
-      #chatbox
-        iframe width="350" height="430" src="https://console.api.ai/api-client/demo/embedded/41ChatBot"
+    
+    aside#sidebar_secondary.tabbed_sidebar.ng-scope.chat_sidebar
+      .popup-head
+        .popup-head-right.pull-right
+          .btn-group.gurdeepoushan		
+            button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"
+              i class="glyphicon glyphicon-remove"
+      iframe width="300" height="466" src="https://console.api.ai/api-client/demo/embedded/41ChatBot"
+    javascript:
+      $(function(){
+        $("#addClass").click(function(){
+          document.getElementById('sidebar_secondary').style.visibility = 'visible';
+        });
+        $("#removeClass").click(function(){
+          document.getElementById('sidebar_secondary').style.visibility = 'hidden';
+        });
+      })
