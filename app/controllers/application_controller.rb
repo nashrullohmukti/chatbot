@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    tt
     if current_user.has_company?
       if current_user.role.eql?('admin') && current_user.has_company?
         edit_company_path(id: current_user.company, subdomain: current_user.company.domain)
