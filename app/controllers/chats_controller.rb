@@ -14,11 +14,17 @@ class ChatsController < ApplicationController
   end
 
   def webhook
-    if params[:result][:parameters][:orders].nil?
-      render json: {}, status: :ok
-    else
-      response = "Your " + params[:result][:parameters][:orders] + " with id " + params[:result][:parameters][:number] + " is being shipped."
+    if params[:result][:parameters][:number].nil? || params[:result][:parameters][:number] == ""
+      response = "Oops, I didn't get that."
       render json: { speech: response, displayText: response, source: "chatbot-platform.herokuapp.com" }, status: :ok
+    else
+      if params[:result][:parameters][:shipping].nil? || params[:result][:parameters][:shipping] == ""
+        response = "Your order with id " + params[:result][:parameters][:number] + " is being shipped."
+        render json: { speech: response, displayText: response, source: "chatbot-platform.herokuapp.com" }, status: :ok
+      else
+        response = "Your order with id " + params[:result][:parameters][:number] + " payment is completed."
+        render json: { speech: response, displayText: response, source: "chatbot-platform.herokuapp.com" }, status: :ok
+      end
     end
   end
 
