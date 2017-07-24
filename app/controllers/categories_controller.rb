@@ -87,14 +87,15 @@ class CategoriesController < ApplicationController
     intent_request = @api_ai_client.create_intents_request
     response       = intent_request.delete(@category.intent_id)
 
-    if response.is_a?(Hash) && response[:status][:code].eql?(200)
-
+    # if response.is_a?(Hash) && response[:status][:code].eql?(200)
       @category.destroy
       respond_to do |format|
         format.html { redirect_to categories_url, notice: 'Category was successfully destroyed.' }
         format.json { head :no_content }
       end
-    end
+    # else
+    #   respond_to { |f|  f.html { redirect_to categories_url, notice: response.message } }
+    # end
   end
 
   def param_options
