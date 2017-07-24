@@ -7,6 +7,12 @@ div class="page-header"
       dt.label.label-default= model_class.human_attribute_name(:name)
       dd
         pre.prettyprint= @entity.name
+  - @entity.entries.each do |entry|
+    dl
+      dt.label.label-default Entry Name
+      dd
+        pre.prettyprint= entry.name
+    
 
 .form-group
   = link_to t('.back', default: t("helpers.links.back")), entities_path, class: 'btn btn-default'
