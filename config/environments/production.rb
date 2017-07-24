@@ -92,7 +92,7 @@ Rails.application.configure do
   config.force_ssl = false
 
   config.action_mailer.raise_delivery_errors = true
-  config.action_controller.default_url_options = { host: "http://chatbot-platform.herokuapp.com" }
+  config.action_mailer.default_url_options = { host: 'https://chatbot-platform.herokuapp.com'}
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :mailgun
 
