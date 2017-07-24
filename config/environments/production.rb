@@ -89,21 +89,16 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_controller.default_url_options = { host: "http://chatbot-platform.herokuapp.com" }
-
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.perform_deliveries = true
   config.force_ssl = false
 
-  config.action_mailer.smtp_settings = {
-    address: ENV['MAILJET_ADDRESS'],
-    port: ENV['MAILJET_PORT'],
-    user_name: ENV['MAILJET_USERNAME'],
-    password: ENV['MAILJET_PASSWORD'],
-    authentication: 'plain',
-    enable_starttls_auto: true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_controller.default_url_options = { host: "http://chatbot-platform.herokuapp.com" }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :mailgun
+
+  config.action_mailer.mailgun_settings = {
+      api_key: ENV['MAILGUN_API_KEY'],
+      domain: ENV['MAILGUN_DOMAIN'],
   }
 
-  config.action_mailer.default_url_options = {:host => "http://chatbot-platform.herokuapp.com"}
 end

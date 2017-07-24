@@ -54,6 +54,7 @@ gem 'exception_notification'
 gem 'api-ai-ruby', github: "ervinarukii/apiai-ruby-client"
 gem 'carrierwave'
 gem 'kaminari'
+gem 'mailgun-ruby'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
