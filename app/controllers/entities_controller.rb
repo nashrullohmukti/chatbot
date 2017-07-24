@@ -30,8 +30,8 @@ class EntitiesController < ApplicationController
 
     @entity = Entity.new(entity_params)
 
-    respond_to do |format|
-      if response.is_a?(Hash) && response[:status][:code].eql?(200)
+    if response.is_a?(Hash) && response[:status][:code].eql?(200)
+      respond_to do |format|
         @entity.entityId = response[:id]
 
         if @entity.save
@@ -42,6 +42,8 @@ class EntitiesController < ApplicationController
           format.json { render json: @entity.errors, status: :unprocessable_entity }
         end
       end
+    else
+      redirect_to @entity, notice: 'Failed to create entity.'
     end
   end
 
@@ -61,6 +63,8 @@ class EntitiesController < ApplicationController
           format.json { render json: @entity.errors, status: :unprocessable_entity }
         end
       end
+    else
+      redirect_to @entity, notice: 'Failed to update entity.'
     end
   end
 
@@ -74,6 +78,8 @@ class EntitiesController < ApplicationController
         format.html { redirect_to entities_url, notice: 'Entity was successfully destroyed.' }
         format.json { head :no_content }
       end
+    else
+      redirect_to @entity, notice: 'Failed to delete entity.'
     end
   end
 
