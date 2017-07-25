@@ -4,6 +4,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
 		company = Company.new
+		company.name = sign_up_params[:name]
+		company.domain = sign_up_params[:name]
     company.save(validate: false)
 
     resource.role = 'admin'
