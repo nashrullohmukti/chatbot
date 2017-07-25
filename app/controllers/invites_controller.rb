@@ -5,7 +5,6 @@ class InvitesController < ApplicationController
 	end
 
   def invite
-		yyy
     User.invite!(:email => params[:email], :company_id => current_user[:company_id])
   end
 end
