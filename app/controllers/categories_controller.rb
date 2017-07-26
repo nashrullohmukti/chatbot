@@ -29,7 +29,6 @@ class CategoriesController < ApplicationController
     intent_request = @api_ai_client.create_intents_request
     response       = intent_request.create(param_options)
     contexts_templates  = { contexts: category_params[:contexts].split(","), templates: category_params[:templates].split(",") }
-
     @category = Category.new(category_params.merge(contexts_templates))
 
     respond_to do |format|
@@ -100,40 +99,46 @@ class CategoriesController < ApplicationController
 
   def param_options
     user_says_data = []
-
-    category_params[:intent_user_says_attributes].each do |k, us|
-      user_says_data << ApiAiRuby::UserSayData.new(us[:text], us[:alias], us[:meta])
-    end
-
     responses = []
 
-    category_params[:intent_responses_attributes].each do |k, r|
-      intent_aff_contexts = []
-      intent_parameters   = []
-
-      intent_aff_contexts_attr = r[:intent_affected_contexts_attributes] || Array.new
-      intent_aff_contexts_attr.each do |kac, vac|
-        intent_aff_contexts << ApiAiRuby::AffectedContext.new(vac[:name], vac[:lifespan])
+    if category_params[:intent_user_says_attributes].nil?
+      category_params[:intent_user_says_attributes] = ""
+    else
+      category_params[:intent_user_says_attributes].each do |k, us|
+        user_says_data << ApiAiRuby::UserSayData.new(us[:text], us[:alias], us[:meta])
       end
+    end
 
-      intent_parameters_attr = r[:intent_parameters_attributes] || Array.new
-      intent_parameters_attr.each do |kp, vp|
-        intent_parameters << ApiAiRuby::Parameter.new(vp[:name], vp[:data_type], "\$" + vp[:value])
+    if category_params[:intent_responses_attributes].nil?
+      category_params[:intent_responses_attributes] = ""
+    else
+      category_params[:intent_responses_attributes].each do |k, r|
+        intent_aff_contexts = []
+        intent_parameters   = []
+
+        intent_aff_contexts_attr = r[:intent_affected_contexts_attributes] || Array.new
+        intent_aff_contexts_attr.each do |kac, vac|
+          intent_aff_contexts << ApiAiRuby::AffectedContext.new(vac[:name], vac[:lifespan])
+        end
+
+        intent_parameters_attr = r[:intent_parameters_attributes] || Array.new
+        intent_parameters_attr.each do |kp, vp|
+          intent_parameters << ApiAiRuby::Parameter.new(vp[:name], vp[:data_type], "\$" + vp[:value])
+        end
+
+        responses << ApiAiRuby::Response.new(
+          "true",
+          r[:action],
+          intent_aff_contexts,
+          intent_parameters,
+          r[:speech])
       end
-
-      responses << ApiAiRuby::Response.new(
-        r[:reset_contexts],
-        r[:action],
-        intent_aff_contexts,
-        intent_parameters,
-        category_params[:speech]
-      )
     end
 
     param_options = ApiAiRuby::Intent.new(
-      category_params[:name] + "_intent",
+      category_params[:name],
       (category_params[:auto].eql?("1") ? true : false),
-      category_params[:contexts].split(","),
+      [category_params[:name].downcase.tr(" ","-")],
       category_params[:templates].split(","),
       [ { "data": user_says_data } ],
       responses, 500000

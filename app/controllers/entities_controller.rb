@@ -30,10 +30,9 @@ class EntitiesController < ApplicationController
 
     @entity = Entity.new(entity_params)
 
-    if response.is_a?(Hash) && response[:status][:code].eql?(200)
-      respond_to do |format|
+    respond_to do |format|
+      if response.is_a?(Hash) && response[:status][:code].eql?(200)
         @entity.entityId = response[:id]
-
         if @entity.save
           format.html { redirect_to @entity, notice: 'Entity was successfully created.' }
           format.json { render :show, status: :created, location: @entity }
@@ -41,9 +40,9 @@ class EntitiesController < ApplicationController
           format.html { render :new }
           format.json { render json: @entity.errors, status: :unprocessable_entity }
         end
+      else
+        format.html { redirect_to new_entity_path, alert: 'Failed to create entity.'}
       end
-    else
-      redirect_to @entity, notice: 'Failed to create entity.'
     end
   end
 
@@ -53,8 +52,8 @@ class EntitiesController < ApplicationController
     param_opt = param_options("update")
     uer = @api_ai_client.create_entities_request
     response = uer.update(entity_params[:name].downcase.tr(" ","_"), param_opt)
-    if response.is_a?(Hash) && response[:status][:code].eql?(200)
-      respond_to do |format|
+    respond_to do |format|
+      if response.is_a?(Hash) && response[:status][:code].eql?(200)
         if @entity.update(entity_params)
           format.html { redirect_to @entity, notice: 'Entity was successfully updated.' }
           format.json { render :show, status: :ok, location: @entity }
@@ -62,9 +61,9 @@ class EntitiesController < ApplicationController
           format.html { render :edit }
           format.json { render json: @entity.errors, status: :unprocessable_entity }
         end
+      else
+        format.html { redirect_to @entity, alert: 'Failed to update entity.'}
       end
-    else
-      redirect_to @entity, notice: 'Failed to update entity.'
     end
   end
 
@@ -72,21 +71,25 @@ class EntitiesController < ApplicationController
     uer = @api_ai_client.create_entities_request
     response = uer.delete(@entity.entityId)
 
-    if response.is_a?(Hash) && response[:status][:code].eql?(200)
-      @entity.destroy
-      respond_to do |format|
+    respond_to do |format|
+      if response.is_a?(Hash) && response[:status][:code].eql?(200)
+        @entity.destroy
         format.html { redirect_to entities_url, notice: 'Entity was successfully destroyed.' }
         format.json { head :no_content }
+      else
+        format.html { redirect_to @entity, alert: 'Failed to delete entity.'}
       end
-    else
-      redirect_to @entity, notice: 'Failed to delete entity.'
     end
   end
 
   def param_options(upd = "")
     entries_data = []
-    entity_params[:entries_attributes].each do |k, us|
-      entries_data << ApiAiRuby::Entry.new(us[:name], synonyms = [us[:name]])
+    if entity_params[:entries_attributes].nil?
+      entity_params[:entries_attributes] = "0"
+    else
+      entity_params[:entries_attributes].each do |k, us|
+        entries_data << ApiAiRuby::Entry.new(us[:name], synonyms = [us[:name]])
+      end
     end
     if upd == "update"
       param_options = (entries_data)

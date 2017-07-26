@@ -1,0 +1,19 @@
+- model_class = Intent
+div class="page-header"
+  h1=t '.title', default: model_class.model_name.human.titleize
+
+.fieldset
+  dl
+      dt.label.label-default= model_class.human_attribute_name(:name)
+      dd
+        pre.prettyprint= @intent.name
+      dt.label.label-default= model_class.human_attribute_name(:intent_id)
+      dd
+        pre.prettyprint= @intent.intent_id
+
+.form-group
+  = link_to t('.back', default: t("helpers.links.back")), intents_path, class: 'btn btn-default'
+  '
+  = link_to t('.edit', default: t("helpers.links.edit")), edit_intent_path(@intent), class: 'btn btn-default'
+  '
+  = link_to t('.destroy', default: t("helpers.links.destroy")), intent_path(@intent), method: "delete", data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) }, class: 'btn btn-danger'

@@ -1,0 +1,32 @@
+- if @notice.present?
+  .alert.alert-danger
+    p = @notice
+
+= simple_form_for @intent, html: { class: "form-horizontal" }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean } do |f|
+  = f.input :name
+  = f.input :entity_id
+  
+  #intentUserSays
+    = f.simple_fields_for :intent_user_says do |user_say|
+      = render 'intent_user_say_fields', f: user_say
+
+  .col-md-12
+    = link_to_add_association 'Add User Say', f, :intent_user_says, class: "btn btn-sm btn-success"
+    br
+    br
+
+  .clearfix
+
+  #intentResponses
+    = f.simple_fields_for :intent_responses do |response|
+      = render 'intent_response_fields', f: response
+
+  .col-md-12
+    = link_to_add_association 'Add Response', f, :intent_responses, class: "btn btn-sm btn-success"
+    br
+    br
+
+  .form-group
+    .col-sm-offset-3.col-sm-9
+      = f.submit nil, class: 'btn btn-primary'
+      = link_to t('.cancel', default: t("helpers.links.cancel")), intents_path, class: 'btn btn-default'

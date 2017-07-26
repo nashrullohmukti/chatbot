@@ -1,3 +1,3 @@
 class IntentUserSay < ApplicationRecord
-  belongs_to :category
+  belongs_to :intent
 end

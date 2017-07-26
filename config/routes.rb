@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :intents
   resources :entries
   resources :entities
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
